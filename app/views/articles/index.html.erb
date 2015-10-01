@@ -1,6 +1,25 @@
 <h1>Listing Articles</h1>
 
-<table>
+<%= render(@articles) %>
+
+<!-- <% @articles.each do |article| %>
+  <h3><%= article.title %></h3>
+  <p><%= article.content %></p>
+  <p><%= article.user.email %></p>
+
+  <%= link_to 'Show', article %>
+
+  <% if can? :update, article %>
+    <%= link_to 'Edit', edit_article_path(article) %>
+  <% end %>
+
+  <% if can? :destroy, article %>
+    <%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+
+<% end %> -->
+
+<!-- <table>
   <thead>
     <tr>
       <th>Title</th>
@@ -29,10 +48,10 @@
       </tr>
     <% end %>
   </tbody>
-</table>
+</table> -->
 
 <br>
-
-<% if can? :create, Article %>
+<br>
+<% if user_signed_in? %>
   <%= link_to 'New Article', new_article_path  %>
 <% end %>
