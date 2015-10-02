@@ -1,0 +1,15 @@
+<h3><%= article.title %></h3>
+<p><%= article.content %></p>
+
+<p><%= link_to article.user.email, articles_path(user_id: article.user.id) %>
+</p>
+
+<%= link_to 'Show', article %>
+
+<% if can? :update, article %>
+  <%= link_to 'Edit', edit_article_path(article) %>
+<% end %>
+
+<% if can? :destroy, article %>
+  <%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
