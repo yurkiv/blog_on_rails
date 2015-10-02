@@ -15,9 +15,9 @@ class Ability
     #   atricle.try(:user) == user
     # end
 
-    if user.has_role? :admin
+    # if user.has_role? :admin
       ###> user.add_role "admin"
-    elsif user.id
+    if user.id
       can :read, Article
       can :create, Article
 
