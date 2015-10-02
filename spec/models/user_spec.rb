@@ -1,5 +1,5 @@
 require 'rails_helper'
-require "cancan/matchers"
+require 'cancan/matchers'
 
 RSpec.describe User, type: :model do
   before { @user = User.new(email: "user@example.com", password: "12345678") }
@@ -39,32 +39,32 @@ RSpec.describe User, type: :model do
 
   describe 'Abilities' do
 
-    let(:user) { @user }
+    let(:user) { @user.save }
     subject { Ability.new(user) }
 
-    context "a guest user" do
-      it "cannot create article" do
-        expect(subject).to_not be_able_to(:create, Article)
-      end
-
-      it "cannot update article" do
-        expect(subject).to_not be_able_to(:update, Article)
-      end
-
-      it "cannot destroy article" do
-        expect(subject).to_not be_able_to(:create, Article)
-      end
-
-      it "can read article" do
-        expect(subject).to be_able_to(:read, Article)
-      end
-
-    end
+    # context "a guest user" do
+    #   it "cannot create article" do
+    #     expect(subject).to_not be_able_to(:create, Article)
+    #   end
+    #
+    #   it "cannot update article" do
+    #     expect(subject).to_not be_able_to(:update, Article)
+    #   end
+    #
+    #   it "cannot destroy article" do
+    #     expect(subject).to_not be_able_to(:create, Article)
+    #   end
+    #
+    #   it "can read article" do
+    #     expect(subject).to be_able_to(:read, Article)
+    #   end
+    #
+    # end
 
     context "a signed user" do
-      let(:user) { @user.save }
+      # let(:user) { @user.save }
       it "can create article" do
-        expect(subject).to_not be_able_to(:create, Article)
+        expect(subject).to be_able_to(:create, Article)
       end
 
       it "can update article" do
