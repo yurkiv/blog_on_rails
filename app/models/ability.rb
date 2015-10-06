@@ -4,20 +4,9 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    # can :read, Article
-    # can :create, Article
-    #
-    # can :update, Article do |atricle|
-    #   atricle.try(:user) == user
-    # end
-    #
-    # can :destroy, Article do |atricle|
-    #   atricle.try(:user) == user
-    # end
-
-    # if user.has_role? :admin
-      ###> user.add_role "admin"
-    if user.id
+    if user.has_role? :admin
+      can :manage, :all
+    elsif user.id
       can :read, Article
       can :create, Article
 
@@ -31,11 +20,6 @@ class Ability
     else
       can :read, Article
     end
-
-
-
-
-
 
     # can :crud
 
