@@ -17,7 +17,7 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">          
+        <ul class="nav navbar-nav">
           <li>
             <% if user_signed_in? %>
               <%= link_to 'My Articles', user_articles_path(user_id: current_user.id), :class => 'navbar-link' %>
@@ -26,6 +26,11 @@
           <li>
             <% if user_signed_in? %>
               <%= link_to 'New Article', new_article_path, :class => 'navbar-link' %>
+            <% end %>
+          </li>
+          <li>
+            <% if user_signed_in?&&(current_user.has_role? :admin) %>
+              <%= link_to 'User Dashboard', admin_users_path, :class => 'navbar-link' %>
             <% end %>
           </li>
         </ul>

@@ -10,10 +10,11 @@ class Admin::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
+    @user.add_role params[:user][:roles]
     if @user.save
       flash[:notice] = "Successfully created User."
-      redirect_to users_path
+      redirect_to admin_users_path
     else
       render :action => 'new'
     end
@@ -31,7 +32,7 @@ class Admin::UsersController < ApplicationController
         @user.roles.clear
         @user.add_role params[:user][:roles]
         flash[:notice] = "Successfully updated User."
-        redirect_to users_path
+        redirect_to admin_users_path
       else
         render :action => 'edit'
       end
@@ -41,7 +42,7 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.destroy
       flash[:notice] = "Successfully deleted User."
-      redirect_to root_path
+      redirect_to admin_users_path
     end
   end
 

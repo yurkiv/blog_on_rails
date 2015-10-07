@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     resources :users
   end
 
-  get '/admin' => 'users#index'
+  get '/admin' => 'admin/users#index'
 
   # resources :user, :controller => "user"
 
