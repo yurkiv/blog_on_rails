@@ -21,7 +21,7 @@
   <%= f.password_field :password_confirmation %></p>
 
   <% if can? :manage, @users %>
-    <p><%= f.label :role %>: <%= f.select :roles, options_from_collection_for_select(Role.all,"name","name") %></p>
+    <p><%= f.label :role %>: <%= f.select :roles, options_from_collection_for_select(Role.select(:name).uniq,"name","name") %></p>
   <% end %>
 
   <p><%= f.submit "Submit" %></p>

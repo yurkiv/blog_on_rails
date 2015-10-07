@@ -40,10 +40,17 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    if @user.destroy
-      flash[:notice] = "Successfully deleted User."
-      redirect_to admin_users_path
+
+    begin
+      if @user.destroy
+        flash[:notice] = "Successfully deleted User."
+        redirect_to admin_users_path
+      end
+    rescue StandardError => e
+      flash[:notice] = e.message
     end
+
+
   end
 
   def user_params

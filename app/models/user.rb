@@ -8,11 +8,21 @@ class User < ActiveRecord::Base
   has_many :articles, dependent: :destroy
 
   after_create :assign_default_role
-
-  ROLES = %w[admin user]
+  # after_destroy :ensure_an_admin_remains
 
   private
     def assign_default_role
       add_role(:user) if self.roles.blank?
+    end
+
+    def ensure_an_admin_remains
+      users = User.all
+      users.each do |user|
+        if user.has_role? :admin
+          raise "Can't delete last user"
+        end
+      end
+
+
     end
 end
