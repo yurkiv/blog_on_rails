@@ -7,9 +7,13 @@ class ArticlesController < ApplicationController
   def index
     if user = User.find_by_id(params[:user_id])
       @articles = user.articles
+    elsif category = Category.find_by_id(params[:category_id])
+      @articles = category.articles
     else
       @articles=Article.all
     end
+
+
   end
 
   # GET /articles/1
@@ -30,6 +34,7 @@ class ArticlesController < ApplicationController
   # POST /articles.json
   def create
     @article = current_user.articles.build(article_params)
+    @article.category params[:article][:category]
 
     respond_to do |format|
       if @article.save
@@ -74,6 +79,6 @@ class ArticlesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:title, :content, :user_id)
+      params.require(:article).permit(:title, :content, :user_id, :category_id)
     end
 end

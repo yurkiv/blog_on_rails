@@ -13,6 +13,11 @@
   <%= @article.user.email %>
 </p>
 
+<p>
+  <strong>Category:</strong>
+  <%= @article.category.name %>
+</p>
+
 <% if can? :update, @article %>
   <%= link_to "Edit", edit_article_path(@article) %> |
 <% end %>

@@ -28,11 +28,14 @@
               <%= link_to 'New Article', new_article_path, :class => 'navbar-link' %>
             <% end %>
           </li>
-          <li>
-            <% if user_signed_in?&&(current_user.has_role? :admin) %>
+          <% if user_signed_in?&&(current_user.has_role? :admin) %>
+            <li>
               <%= link_to 'User Dashboard', admin_users_path, :class => 'navbar-link' %>
-            <% end %>
-          </li>
+            </li>
+            <li>
+              <%= link_to 'Category Dashboard', admin_categories_path, :class => 'navbar-link' %>
+            </li>
+          <% end %>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <!-- <li><a href="#">Sign in</a></li>

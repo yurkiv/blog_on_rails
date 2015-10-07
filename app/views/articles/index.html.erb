@@ -1,5 +1,11 @@
-<h1>Listing Articles</h1>
-
-<%= render(@articles) %>
-
-<br>
+<div class="row">
+  <div class="col-sm-8">
+    <%= render(@articles) %>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <h4>Categories:</h4>
+    <% for category in Category.all %>
+      <p><%= link_to category.name, category_articles_path(category_id: category.id) %></p>
+    <% end %>
+  </div>
+</div>

@@ -7,5 +7,12 @@ class User < ActiveRecord::Base
 
   has_many :articles, dependent: :destroy
 
+  after_create :assign_default_role
+
   ROLES = %w[admin user]
+
+  private
+    def assign_default_role
+      add_role(:user) if self.roles.blank?
+    end
 end

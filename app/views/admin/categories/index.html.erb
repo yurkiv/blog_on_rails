@@ -1,0 +1,6 @@
+<h4>Categories:</h4>
+<%= render (@categories) %>
+<br>
+<% if can? :create, @categories %>
+  <%= link_to 'New Category', new_admin_category_path %>
+<% end %>

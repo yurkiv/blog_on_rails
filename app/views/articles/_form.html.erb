@@ -19,6 +19,11 @@
     <%= f.label :content %><br>
     <%= f.text_area :content %>
   </div>
+
+  <p>
+    <%= f.label :category_id %>: <%= f.select :category_id, options_from_collection_for_select(Category.all,"id","name") %>
+  </p>
+
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  # resources :categories
   resources :articles
   devise_for :users
 
@@ -7,8 +8,13 @@ Rails.application.routes.draw do
     resources :articles
   end
 
+  resources :categories do
+    resources :articles
+  end
+
   namespace :admin do
     resources :users
+    resources :categories
   end
 
   get '/admin' => 'admin/users#index'
