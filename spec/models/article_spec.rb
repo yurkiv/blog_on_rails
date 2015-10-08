@@ -4,7 +4,8 @@ RSpec.describe Article, type: :model do
 
   before do
     @user=FactoryGirl.create(:user)
-    @article = FactoryGirl.create(:article, user: @user)
+    @category=FactoryGirl.create(:category)
+    @article = FactoryGirl.create(:article, user: @user, category: @category)
   end
 
   it { expect(@article).to respond_to(:title) }

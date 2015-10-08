@@ -2,7 +2,7 @@
 <p><%= article.content %></p>
 
 <p><%= link_to article.user.email, user_articles_path(user_id: article.user.id) %> |
-<%= link_to article.category.name, category_articles_path(category_id: article.category) %>
+<%= link_to article.category.name, category_articles_path(category_id: article.category.id) %>
 </p>
 
 <%= link_to 'Show', article %>

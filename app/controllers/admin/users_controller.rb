@@ -25,29 +25,28 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
-      @user = User.find(params[:id])
-      params[:user].delete(:password) if params[:user][:password].blank?
-      params[:user].delete(:password_confirmation) if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
-      if @user.update_attributes(user_params)
-        @user.roles.clear
-        @user.add_role params[:user][:roles]
-        flash[:notice] = "Successfully updated User."
-        redirect_to admin_users_path
-      else
-        render :action => 'edit'
-      end
+    @user = User.find(params[:id])
+    params[:user].delete(:password) if params[:user][:password].blank?
+    params[:user].delete(:password_confirmation) if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
+    if @user.update_attributes(user_params)
+      @user.roles.clear
+      @user.add_role params[:user][:roles]
+      flash[:notice] = "Successfully updated User."
+      redirect_to admin_users_path
+    else
+      render :action => 'edit'
     end
+  end
 
   def destroy
     @user = User.find(params[:id])
 
-    begin
-      if @user.destroy
-        flash[:notice] = "Successfully deleted User."
-        redirect_to admin_users_path
-      end
-    rescue StandardError => e
-      flash[:notice] = e.message
+    if current_user==@user
+      flash[:notice] = "Can't delete self."
+      redirect_to admin_users_path
+    elsif @user.destroy
+      flash[:notice] = "Successfully deleted User."
+      redirect_to admin_users_path
     end
 
 

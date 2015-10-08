@@ -35,6 +35,11 @@ RSpec.describe User, type: :model do
     it { expect(user).to_not be_valid }
   end
 
+  it "new user has default role 'user'" do
+    user.save
+    expect(user.has_role? :user).to eq true
+  end
+
   describe 'Abilities' do
 
     context "when a guest user" do
@@ -78,6 +83,64 @@ RSpec.describe User, type: :model do
 
       it "can read article" do
         expect(ability).to be_able_to(:read, Article)
+      end
+
+      it "cannot create user" do
+        expect(ability).to_not be_able_to(:create, User)
+      end
+
+      it "cannot update user" do
+        expect(ability).to_not be_able_to(:update, User)
+      end
+
+      it "cannot destroy user" do
+        expect(ability).to_not be_able_to(:create, User)
+      end
+
+    end
+
+    context "when a admin" do
+
+      let(:ability) do
+        user.add_role :admin
+        user.save
+        Ability.new(user)
+      end
+
+      it "can create article" do
+        expect(ability).to be_able_to(:create, Article)
+      end
+
+      it "can update article" do
+        expect(ability).to be_able_to(:update, Article)
+      end
+
+      it "can destroy article" do
+        expect(ability).to be_able_to(:create, Article)
+      end
+
+      it "can create user" do
+        expect(ability).to be_able_to(:create, User)
+      end
+
+      it "can update user" do
+        expect(ability).to be_able_to(:update, User)
+      end
+
+      it "can destroy user" do
+        expect(ability).to be_able_to(:create, User)
+      end
+
+      it "can create category" do
+        expect(ability).to be_able_to(:create, Category)
+      end
+
+      it "can update category" do
+        expect(ability).to be_able_to(:update, Category)
+      end
+
+      it "can destroy category" do
+        expect(ability).to be_able_to(:create, Category)
       end
     end
   end
