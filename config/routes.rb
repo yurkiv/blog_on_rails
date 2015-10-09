@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper
   # resources :categories
   resources :articles
   devise_for :users
@@ -18,6 +19,16 @@ Rails.application.routes.draw do
   end
 
   get '/admin' => 'admin/users#index'
+
+  #api
+  namespace :api do
+    namespace :v1 do
+      resources :articles
+      resources :users, :categories do
+        resources :articles
+      end
+    end
+  end
 
   # resources :user, :controller => "user"
 

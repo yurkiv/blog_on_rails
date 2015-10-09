@@ -1,20 +1,15 @@
-class ArticlesController < ApplicationController
+class Api::V1::ArticlesController < Api::V1::BaseController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
 
-  load_and_authorize_resource
   # GET /articles
   # GET /articles.json
   def index
+    @articles = Article.all
     if user = User.find_by_id(params[:user_id])
       @articles = user.articles
     elsif category = Category.find_by_id(params[:category_id])
       @articles = category.articles
-    elsif params[:search]
-      @articles = Article.search(params[:search])
-    else
-      @articles=Article.all
     end
-
   end
 
   # GET /articles/1
@@ -39,10 +34,8 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
-        format.html { render :new }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
@@ -53,10 +46,8 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
-        format.html { redirect_to @article, notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
       else
-        format.html { render :edit }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
@@ -67,7 +58,6 @@ class ArticlesController < ApplicationController
   def destroy
     @article.destroy
     respond_to do |format|
-      format.html { redirect_to articles_url, notice: 'Article was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
