@@ -1,10 +1,12 @@
 class Api::V1::ArticlesController < Api::V1::BaseController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /articles
   # GET /articles.json
   def index
     @articles = Article.all
+
     if user = User.find_by_id(params[:user_id])
       @articles = user.articles
     elsif category = Category.find_by_id(params[:category_id])
@@ -32,13 +34,13 @@ class Api::V1::ArticlesController < Api::V1::BaseController
     @article = current_user.articles.build(article_params)
     @article.category params[:article][:category]
 
-    respond_to do |format|
-      if @article.save
-        format.json { render :show, status: :created, location: @article }
-      else
-        format.json { render json: @article.errors, status: :unprocessable_entity }
-      end
+
+    if @article.save
+      render :show, status: :created, location: @article
+    else
+      render json: @article.errors, status: :unprocessable_entity
     end
+
   end
 
   # PATCH/PUT /articles/1
