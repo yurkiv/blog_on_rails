@@ -7,6 +7,11 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'devise'
 
+# with many helpers
+Dir[File.dirname(__FILE__) + "/support/*.rb"].each {|f| require f }
+# or only one
+# require 'support/request_helpers'
+
 include Warden::Test::Helpers
 Warden.test_mode!
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -62,5 +67,7 @@ RSpec.configure do |config|
   config.before :suite do
     Warden.test_mode!
   end
+
+  config.include Requests::JsonHelpers
 
 end
