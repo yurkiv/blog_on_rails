@@ -7,8 +7,9 @@ Doorkeeper.configure do
   #   # raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
   #   # Put your resource owner authentication logic here.
   #   # Example implementation:
-  #   #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
-  #   current_user || warden.authenticate!(:scope => :user)
+  #
+  #     # puts session[:user_id]
+  #   # current_user || warden.authenticate!(:scope => :user)
   # end
 
   resource_owner_from_credentials do |_routes|
@@ -21,11 +22,16 @@ Doorkeeper.configure do
   # end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
-  # admin_authenticator do
-  #   # Put your admin authentication logic here.
-  #   # Example implementation:
-  #   Admin.find_by_id(session[:admin_id]) || redirect_to(new_admin_session_url)
-  # end
+  admin_authenticator do
+    # Put your admin authentication logic here.
+    # Example implementation:
+
+
+    unless current_user && (current_user.has_role? :admin)
+      redirect_to(new_user_session_url)
+      flash[:notice] = "Please, sign in as admin."
+    end
+  end
 
   # Authorization Code expiration time (default 10 minutes).
   # authorization_code_expires_in 10.minutes
