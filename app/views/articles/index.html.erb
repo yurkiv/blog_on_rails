@@ -7,6 +7,10 @@
     <% end %>
 
     <%= render(@articles) %>
+
+    <p>
+      <%= paginate @articles %>
+    </p>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <h4>Categories:</h4>

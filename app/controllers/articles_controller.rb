@@ -6,14 +6,15 @@ class ArticlesController < ApplicationController
   # GET /articles.json
   def index
     if user = User.find_by_id(params[:user_id])
-      @articles = user.articles
+      @articles = user.articles.page(params[:page]).per(3)
     elsif category = Category.find_by_id(params[:category_id])
-      @articles = category.articles
+      @articles = category.articles.page(params[:page]).per(3)
     elsif params[:search]
-      @articles = Article.search(params[:search])
+      @articles = Article.search(params[:search]).page(params[:page]).per(3)
     else
-      @articles=Article.all
+      @articles=Article.all.page(params[:page]).per(3)
     end
+    # @articles.page(params[:page]).per(3)
 
   end
 
