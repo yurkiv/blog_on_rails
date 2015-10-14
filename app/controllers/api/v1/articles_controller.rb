@@ -5,12 +5,12 @@ class Api::V1::ArticlesController < Api::V1::BaseController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
+    @articles = Article.all.page(params[:page]).per(params[:limit])
 
     if user = User.find_by_id(params[:user_id])
-      @articles = user.articles
+      @articles = user.articles.page(params[:page]).per(params[:limit])
     elsif category = Category.find_by_id(params[:category_id])
-      @articles = category.articles
+      @articles = category.articles.page(params[:page]).per(params[:limit])
     end
   end
 

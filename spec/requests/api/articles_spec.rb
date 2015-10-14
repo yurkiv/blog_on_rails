@@ -13,6 +13,24 @@ RSpec.describe Api::V1::ArticlesController, type: :request do
       expect(article_titles).to match_array(["Test Article"])
       expect(response).to have_http_status(200)
     end
+
+    context "when use pagination" do
+      it 'returns the paginate articles as json' do
+        article2 = FactoryGirl.create(:article, title: "Test Article2", user_id: user.id, category_id: 1)
+        article3 = FactoryGirl.create(:article, title: "Test Article3", user_id: user.id, category_id: 1)
+        article4 = FactoryGirl.create(:article, title: "Test Article4", user_id: user.id, category_id: 1)
+
+        get api_v1_articles_path,
+          format: :json,
+          access_token: token.token,
+          page: "2",
+          limit: "2"
+
+        article_titles = json.map { |a| a["title"] }
+        expect(article_titles).to match_array(["Test Article3", "Test Article4"])
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
   describe "GET /articles/:id" do
