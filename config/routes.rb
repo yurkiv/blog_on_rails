@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  apipie
   use_doorkeeper
   # resources :categories
   resources :articles

@@ -32,12 +32,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'devise'
 gem 'bootstrap-sass', '~> 3.3.5'
+
+gem 'devise'
 gem 'cancancan', '~> 1.10'
 gem "rolify"
+
 gem 'doorkeeper'
 gem 'kaminari'
+gem 'apipie-rails', github: 'Apipie/apipie-rails', ref: '928bd858fd14ec67eeb9483ba0d43b3be8339608'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

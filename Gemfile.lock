@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/Apipie/apipie-rails.git
+  revision: 928bd858fd14ec67eeb9483ba0d43b3be8339608
+  ref: 928bd858fd14ec67eeb9483ba0d43b3be8339608
+  specs:
+    apipie-rails (0.3.4)
+      json
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -196,6 +204,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  apipie-rails!
   bootstrap-sass (~> 3.3.5)
   byebug
   cancancan (~> 1.10)

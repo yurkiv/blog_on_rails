@@ -1,38 +1,43 @@
 class Api::V1::BaseController < ApplicationController
-    include CanCan::ControllerAdditions
+  include CanCan::ControllerAdditions
 
-      clear_respond_to
-      respond_to :json
+  resource_description do
+    api_version 'v1'
+    api_base_url "/api/v1"
+  end
 
-      before_action :doorkeeper_authorize!
-      before_action :authenticate_user!
+    clear_respond_to
+    respond_to :json
 
-      check_authorization unless: :devise_controller?
+    before_action :doorkeeper_authorize!
+    before_action :authenticate_user!
 
-      rescue_from CanCan::AccessDenied do |e|
-        render json: errors_json(e.message), status: :forbidden
+    check_authorization unless: :devise_controller?
+
+    rescue_from CanCan::AccessDenied do |e|
+      render json: errors_json(e.message), status: :forbidden
+    end
+
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      render json: errors_json(e.message), status: :not_found
+    end
+
+  private
+
+    def authenticate_user!
+      if doorkeeper_token
+        Thread.current[:current_user] = User.find(doorkeeper_token.resource_owner_id)
       end
+      return if current_user
 
-      rescue_from ActiveRecord::RecordNotFound do |e|
-        render json: errors_json(e.message), status: :not_found
-      end
+      render json: { errors: ['User is not authenticated!'] }, status: :unauthorized
+    end
 
-    private
+    def current_user
+      Thread.current[:current_user]
+    end
 
-      def authenticate_user!
-        if doorkeeper_token
-          Thread.current[:current_user] = User.find(doorkeeper_token.resource_owner_id)
-        end
-        return if current_user
-
-        render json: { errors: ['User is not authenticated!'] }, status: :unauthorized
-      end
-
-      def current_user
-        Thread.current[:current_user]
-      end
-
-      def errors_json(messages)
-        { errors: [*messages] }
-      end
+    def errors_json(messages)
+      { errors: [*messages] }
+    end
 end

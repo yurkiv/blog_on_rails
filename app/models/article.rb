@@ -5,8 +5,10 @@ class Article < ActiveRecord::Base
   validates :category_id, presence: true
   validates :title, :content, presence: true, length: { minimum: 5 }
 
-  def self.search(search)
-    where("content LIKE ? OR title LIKE ?", "%#{search}%", "%#{search}%")
-  end
+  scope :search, ->(q) {where("content LIKE ? OR title LIKE ?", "%#{q}%", "%#{q}%")}
+
+  # def self.search(search)
+  #   where("content LIKE ? OR title LIKE ?", "%#{search}%", "%#{search}%")
+  # end
 
 end
