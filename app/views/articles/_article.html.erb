@@ -1,5 +1,7 @@
 <h3><%= article.title %></h3>
-<p><%= image_tag article.image.url(:thumb) %></p>
+<% if article.pictures.first %>
+  <p><%= image_tag article.pictures.first.image.url(:thumb) %></p>
+<% end %>
 <p><%= article.content %></p>
 
 <p><%= link_to article.user.email, user_articles_path(user_id: article.user.id) %> |

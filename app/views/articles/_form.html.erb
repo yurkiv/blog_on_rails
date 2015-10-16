@@ -26,7 +26,8 @@
 
   <div class="field">
     <%= f.label :image %><br>
-    <%= f.file_field :image %>
+    <!-- <%= f.file_field :image %> -->
+    <%= file_field_tag "images[]", type: :file, multiple: true %>
   </div>
 
   <div class="actions">

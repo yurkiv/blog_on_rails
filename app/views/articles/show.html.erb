@@ -3,9 +3,11 @@
   <%= @article.title %>
 </h3>
 
-<p>
-  <%= image_tag @article.image.url(:medium) %>
-</p>
+<% unless @article.pictures.empty? %>
+  <% @article.pictures.each do |pic| %>
+    <p><%= image_tag pic.image.url(:medium) %></p>
+  <% end %>
+<% end %>
 
 <p>
   <strong>Content:</strong>
