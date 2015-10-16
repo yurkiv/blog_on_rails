@@ -42,6 +42,7 @@ gem 'doorkeeper'
 gem 'kaminari'
 gem 'apipie-rails', github: 'Apipie/apipie-rails', ref: '928bd858fd14ec67eeb9483ba0d43b3be8339608'
 
+gem "paperclip", "~> 4.3"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
