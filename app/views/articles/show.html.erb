@@ -4,6 +4,10 @@
 </h3>
 
 <p>
+  <%= image_tag @article.image.url(:medium) %>
+</p>
+
+<p>
   <strong>Content:</strong>
   <%= @article.content %>
 </p>
