@@ -1,30 +1,17 @@
-<h3>
-  <strong>Title:</strong>
-  <%= @article.title %>
-</h3>
+<h2><%= @article.title %></h2>
+
+<p class="highlight_text">
+  <%= @article.user.email %> | <%= @article.category.name %>
+</p>
 
 <% unless @article.pictures.empty? %>
-  <% @article.pictures.each do |pic| %>
-    <p><%= image_tag pic.image.url(:medium) %></p>
-  <% end %>
+<% @article.pictures.each do |pic| %>
+<p><%= image_tag pic.image.url(:medium) %></p>
+<% end %>
 <% end %>
 
-<p>
-  <strong>Content:</strong>
-  <%= @article.content %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @article.user.email %>
-</p>
-
-<p>
-  <strong>Category:</strong>
-  <%= @article.category.name %>
-</p>
+<p><%= @article.content %></p>
 
 <% if can? :update, @article %>
-  <%= link_to "Edit", edit_article_path(@article) %> |
+<%= link_to "Edit", edit_article_path(@article),class: "button" %>
 <% end %>
-<%= link_to 'Back', articles_path %>

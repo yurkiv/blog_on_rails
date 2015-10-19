@@ -25,11 +25,9 @@
   </p>
 
   <div class="field">
-    <%= f.label :image %><br>
-    <!-- <%= f.file_field :image %> -->
-    <%= file_field_tag "images[]", type: :file, multiple: true %>
+    <%= f.label :images %>: <%= file_field_tag "images[]", type: :file, multiple: true %>
   </div>
-
+  <br>
   <div class="actions">
     <%= f.submit %>
   </div>

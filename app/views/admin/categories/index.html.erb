@@ -1,6 +1,7 @@
-<h4>Categories:</h4>
+<h2>Categories Dashboard</h2>
+
 <%= render (@categories) %>
 <br>
 <% if can? :create, @categories %>
-  <%= link_to 'New Category', new_admin_category_path %>
+  <%= link_to 'New Category', new_admin_category_path, class: "button" %>
 <% end %>
