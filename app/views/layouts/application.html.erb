@@ -32,41 +32,53 @@
 
       <div id="right">
         <%= yield(:search) %>
-        <ul>
-          <% if user_signed_in? %>
-            <li>
-              <%= link_to 'My Articles', user_articles_path(user_id: current_user.id), :class => 'navbar-link' %>
-            </li>
-            <li>
-              <%= link_to 'New Article', new_article_path, :class => 'navbar-link' %>
-            </li>
-          <% end %>
-
-          <% if user_signed_in?&&(current_user.has_role? :admin) %>
-            <li>
-              <%= link_to 'User Dashboard', admin_users_path, :class => 'navbar-link' %>
-            </li>
-            <li>
-              <%= link_to 'Category Dashboard', admin_categories_path, :class => 'navbar-link' %>
-            </li>
-          <% end %>
-        </ul>
-
-        <ul>
-          <p>
+        <!-- dropdown container -->
+        <div class="user-menu-wrap">
+          <a href="#" class="mini-photo-wrapper"><i class="fa fa-user fa-2x"></i>
             <% if user_signed_in? %>
-              Logged in as <strong><%= current_user.email %></strong>.
-              <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-              <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-            <% else %>
-              <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
-              <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+              <%= current_user.email %>
             <% end %>
-          </p>
-        </ul>
+        <div class="menu-container">
+          <ul class="user-menu">
+            <% if user_signed_in? %>
+              <li>
+                <%= link_to 'My Articles', user_articles_path(user_id: current_user.id), :class => 'user-menu-link' %>
+              </li>
+              <li>
+                <%= link_to 'New Article', new_article_path, :class => 'user-menu-link' %>
+              </li>
+            <% end %>
+
+            <% if user_signed_in?&&(current_user.has_role? :admin) %>
+              <li>
+                <%= link_to 'User Dashboard', admin_users_path, :class => 'user-menu-link' %>
+              </li>
+              <li>
+                <%= link_to 'Category Dashboard', admin_categories_path, :class => 'user-menu-link' %>
+              </li>
+            <% end %>
+
+            <% if user_signed_in? %>
+              <!-- Logged in as <strong><%= current_user.email %></strong> -->
+              <li><%= link_to 'Edit profile', edit_user_registration_path, :class => 'user-menu-link' %></li>
+              <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'user-menu-link'  %></li>
+            <% else %>
+              <li><%= link_to "Sign up", new_user_registration_path, :class => 'user-menu-link' %></li>
+              <li><%= link_to "Login", new_user_session_path, :class => 'user-menu-link' %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
       </div>
 
     </div>
+
   </div>
 </body>
-</html>
+
+  <script type="text/javascript">
+  document.querySelector('.mini-photo-wrapper').addEventListener('click', function() {
+    document.querySelector('.menu-container').classList.toggle('active');
+  });
+  </script>
+  </html>

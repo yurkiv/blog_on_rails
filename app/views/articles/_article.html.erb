@@ -6,10 +6,10 @@
     <%= link_to article.category.name, category_articles_path(category_id: article.category.id) %>
   </p>
 
+  <p><%= article.content %></p>
   <% if article.pictures.first %>
     <p><%= image_tag article.pictures.first.image.url(:medium) %></p>
   <% end %>
-  <p><%= article.content %></p>
 
   <% if can? :update, article %>
     <%= link_to 'Edit', edit_article_path(article), class: "button" %>

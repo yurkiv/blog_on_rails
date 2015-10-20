@@ -44,6 +44,8 @@ gem 'apipie-rails', github: 'Apipie/apipie-rails', ref: '928bd858fd14ec67eeb9483
 
 gem "paperclip", "~> 4.3"
 
+gem 'font-awesome-rails', '~> 4.1.0.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
