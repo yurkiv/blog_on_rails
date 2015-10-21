@@ -12,7 +12,7 @@ class ArticlesController < ApplicationController
     elsif params[:search]
       @articles = Article.search(params[:search]).page(params[:page]).per(3)
     else
-      @articles=Article.all.page(params[:page]).per(3)
+      @articles=Article.all.order("created_at DESC").page(params[:page]).per(3)
     end
     # @articles.page(params[:page]).per(3)
 
@@ -60,8 +60,10 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+
         if params[:images]
           params[:images].each { |image|
+            puts image
             @article.pictures.create(image: image)
           }
         end

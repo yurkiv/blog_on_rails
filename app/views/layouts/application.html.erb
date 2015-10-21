@@ -8,19 +8,25 @@
 </head>
 <body>
 
-  <div id="container">
-    <div id="row">
-      <div id="left">
-        <h1 class="home"><a href="/">Blog</a><h1>
-        <nav>
-          <ul>
-    			     <%= yield(:side_bar) %>
-          </ul>
-    		</nav>
+  <div class="parent">
+    <div class="col left">
+      <h1 class="home"><a href="/">Blog</a></h1>
+      <div class="nav">
+        <ul>
+          <% for category in Category.all %>
+          <li><%= link_to category.name, category_articles_path(category_id: category.id) %></li>
+          <% end %>
+        </ul>
       </div>
+    </div>
 
-      <div id="content">
-
+    <div class="col content">
+      <% if user_signed_in? %>
+        <%= link_to new_article_path, :class => 'new-article-link' do %>
+          <i class="fa fa-file-text-o fa-2x"></i>
+        <% end %>
+      <% end %>
+      <div class="row">
         <% if notice %>
           <p class="alert alert-success"><%= notice %></p>
         <% elsif alert %>
@@ -29,50 +35,55 @@
 
         <%= yield %>
       </div>
-
-      <div id="right">
-        <%= yield(:search) %>
-        <!-- dropdown container -->
-        <div class="user-menu-wrap">
-          <a href="#" class="mini-photo-wrapper"><i class="fa fa-user fa-2x"></i>
-            <% if user_signed_in? %>
-              <%= current_user.email %>
-            <% end %>
-        <div class="menu-container">
-          <ul class="user-menu">
-            <% if user_signed_in? %>
-              <li>
-                <%= link_to 'My Articles', user_articles_path(user_id: current_user.id), :class => 'user-menu-link' %>
-              </li>
-              <li>
-                <%= link_to 'New Article', new_article_path, :class => 'user-menu-link' %>
-              </li>
-            <% end %>
-
-            <% if user_signed_in?&&(current_user.has_role? :admin) %>
-              <li>
-                <%= link_to 'User Dashboard', admin_users_path, :class => 'user-menu-link' %>
-              </li>
-              <li>
-                <%= link_to 'Category Dashboard', admin_categories_path, :class => 'user-menu-link' %>
-              </li>
-            <% end %>
-
-            <% if user_signed_in? %>
-              <!-- Logged in as <strong><%= current_user.email %></strong> -->
-              <li><%= link_to 'Edit profile', edit_user_registration_path, :class => 'user-menu-link' %></li>
-              <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'user-menu-link'  %></li>
-            <% else %>
-              <li><%= link_to "Sign up", new_user_registration_path, :class => 'user-menu-link' %></li>
-              <li><%= link_to "Login", new_user_session_path, :class => 'user-menu-link' %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-      </div>
-
     </div>
 
+    <div class="col right">
+      <div class="search-container">
+        <div class="search">
+          <%= form_tag(articles_path, :method => "get", id: "search-form") do %>
+            <%= text_field_tag(:search, params[:search], placeholder: "Search Articles", id: "search") %>
+          <% end %>
+        </div>
+        <div class="user">
+          <!-- dropdown container -->
+          <div class="user-menu-wrap">
+            <a href="#" class="mini-photo-wrapper"><i class="fa fa-user fa-2x"></i></a>
+            <div class="menu-container">
+              <ul class="user-menu">
+                <% if user_signed_in? %>
+                  <p class="user-info"><%= current_user.email %></p>
+                  <li>
+                    <%= link_to 'My Articles', user_articles_path(user_id: current_user.id), :class => 'user-menu-link' %>
+                  </li>
+                <% end %>
+
+                <% if user_signed_in?&&(current_user.has_role? :admin) %>
+                  <li>
+                    <%= link_to 'User Dashboard', admin_users_path, :class => 'user-menu-link' %>
+                  </li>
+                  <li>
+                    <%= link_to 'Category Dashboard', admin_categories_path, :class => 'user-menu-link' %>
+                  </li>
+                <% end %>
+
+                <% if user_signed_in? %>
+                  <!-- Logged in as <strong><%= current_user.email %></strong> -->
+                  <li><%= link_to 'Edit profile', edit_user_registration_path, :class => 'user-menu-link' %></li>
+                  <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'user-menu-link'  %></li>
+                <% else %>
+                  <li><%= link_to "Sign up", new_user_registration_path, :class => 'user-menu-link' %></li>
+                  <li><%= link_to "Login", new_user_session_path, :class => 'user-menu-link' %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
   </div>
 </body>
 

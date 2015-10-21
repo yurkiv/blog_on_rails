@@ -1,18 +1,4 @@
 <%= render(@articles) %>
-
 <p>
   <%= paginate @articles %>
 </p>
-
-<% content_for(:side_bar) do %>
-  <% for category in Category.all %>
-  <li><%= link_to category.name, category_articles_path(category_id: category.id) %></li>
-  <% end %>
-<% end %>
-
-<% content_for(:search) do %>
-  <%= form_tag(articles_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag(:search, params[:search], placeholder: "Search Articles", id: "search") do %>
-    <% end %>
-  <% end %>
-<% end %>
