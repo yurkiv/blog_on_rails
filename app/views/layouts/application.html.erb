@@ -28,9 +28,9 @@
       <% end %>
       <div class="row">
         <% if notice %>
-          <p class="alert alert-success"><%= notice %></p>
+          <p class="highlight_text alert-success"><%= notice %></p>
         <% elsif alert %>
-          <p class="alert alert-danger"><%= alert %></p>
+          <p class="highlight_text alert-danger"><%= alert %></p>
         <% end %>
 
         <%= yield %>

@@ -11,11 +11,11 @@
     <p><%= image_tag article.pictures.first.image.url(:medium) %></p>
   <% end %>
 
-  <% if can? :update, article %>
+  <!-- <% if can? :update, article %>
     <%= link_to 'Edit', edit_article_path(article), class: "button" %>
   <% end %>
 
   <% if can? :destroy, article %>
     <%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' }, class: "button" %>
-  <% end %>
+  <% end %> -->
 </div>
