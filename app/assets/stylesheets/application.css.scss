@@ -167,6 +167,12 @@ textarea {
   height: 250px;
 }
 
+input[type="email"], input[type="password"] {
+  @extend textarea;
+  width: 60%;
+  height: 20px;
+}
+
 .search-container{
   width:100%;
   margin-top: 20px;
