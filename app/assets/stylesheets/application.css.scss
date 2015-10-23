@@ -50,9 +50,7 @@ a {
 }
 
 .row {
-  padding: 100px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px 100px;
 }
 
 .nav {
@@ -73,7 +71,7 @@ a {
   height: 40px;
   border: solid $border;
   border-width: 0 0 1px 0;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 40px;
   font-weight: bold;
 }
@@ -91,7 +89,7 @@ a {
 
 .highlight_text {
   display: inline-block;
-  font-size: 14px;
+  font-size: 12px;
   // height: 30px;
   padding: 5px 30px;
   background: #f1f3f4;
@@ -120,7 +118,6 @@ a {
   padding: 12px 45px;
   transition: all 100ms ease-in-out;
   background: #989fb2;
-  color: #fff;
   &:hover {
     opacity: 0.7;
   }
@@ -278,8 +275,7 @@ input[type="email"], input[type="password"] {
 
 .new-article-link {
   float: right;
-  margin: 30px;
-  margin-right: 50px;
+  margin: 30px 50px 30px 30px;
   color: gray;
 }
 
