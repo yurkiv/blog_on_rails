@@ -6,6 +6,7 @@ RSpec.describe Article, type: :model do
     @user=FactoryGirl.create(:user)
     @category=FactoryGirl.create(:category)
     @article = FactoryGirl.create(:article, user: @user, category: @category)
+    @tag=FactoryGirl.create(:tag)
   end
 
   it { expect(@article).to respond_to(:title) }
@@ -22,6 +23,12 @@ RSpec.describe Article, type: :model do
       articles.each do |article|
         expect(Article.where(id: article.id)).to be_empty
       end
+  end
+
+  it "should have tag" do
+      @article.tags<<@tag
+      expect(@article.tags).to contain_exactly(@tag)
+      expect(@tag.articles).to contain_exactly(@article)
   end
 
   describe "when title is not present" do
