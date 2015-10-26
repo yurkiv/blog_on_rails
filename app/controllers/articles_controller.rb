@@ -43,8 +43,10 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       if @article.save
 
-        params[:article][:tags].split(',').each do |tag|
-          @article.tags<<Tag.where(name: tag.strip).first_or_create!
+        if params[:article][:tags]
+          params[:article][:tags].split(',').each do |tag|
+            @article.tags<<Tag.where(name: tag.strip).first_or_create!
+          end
         end
 
         if params[:images]
