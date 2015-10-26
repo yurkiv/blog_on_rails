@@ -31,7 +31,7 @@ a {
   width: 55%;
   border: solid $border;
   border-width: 0 1px 0 1px;
-  box-shadow: 20px 0 20px -15px $border, -20px 0 20px -15px $border;
+  box-shadow: 10px 0 40px $border, -10px 0 40px $border;
 }
 
 .content h2 {
@@ -138,11 +138,13 @@ a {
     color: #989fb2;
   }
 }
+
 .article {
   padding-bottom: 20px;
   border: solid $border;
   border-width: 0 0 1px 0;
 }
+
 input[type="text"],
 textarea {
   display: inline-block;
@@ -238,6 +240,8 @@ input[type="email"], input[type="password"] {
     color: #444;
     font-size: 14px;
     padding: 5px 10px;
+    border: solid $border;
+    border-width: 0 0 1px 0;
     // font-style: italic;
   }
 
@@ -284,6 +288,8 @@ input[type="email"], input[type="password"] {
 }
 
 img {
+    margin-top: 20px;
+    //margin-bottom: 20px;
     max-width: 100%;
     max-height: 100%;
 }
