@@ -63,7 +63,6 @@ class ArticlesController < ApplicationController
 
         if params[:images]
           params[:images].each { |image|
-            puts image
             @article.pictures.create(image: image)
           }
         end
