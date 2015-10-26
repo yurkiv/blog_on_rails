@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20151026092253) do
   end
 
   create_table "articles_tags", id: false, force: :cascade do |t|
-    t.integer "article_id"
-    t.integer "tag_id"
+    t.integer "article_id", null: false
+    t.integer "tag_id",     null: false
   end
 
   add_index "articles_tags", ["article_id"], name: "index_articles_tags_on_article_id"

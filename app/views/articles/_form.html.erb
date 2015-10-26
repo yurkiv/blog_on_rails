@@ -20,6 +20,11 @@
     <%= f.text_area :content %>
   </div>
 
+  <div class="field">
+    <%= f.label :tags %><br>
+    <%= f.text_field :tags, class: 'tags_input', value: '' %>
+  </div>
+
   <p>
     <%= f.label :category_id %>: <%= f.select :category_id, options_from_collection_for_select(Category.all,"id","name") %>
   </p>
@@ -33,3 +38,23 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+  $('.tags_input').tagEditor({
+    initialTags: [
+      <% @article.tags.each do |tag| %>
+        '<%= tag.name %>',
+      <% end %>
+    ],
+    placeholder: 'Enter tags ...'
+  });
+
+  $(document).ready(function() {
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  });
+</script>

@@ -5,10 +5,12 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    if user = User.find_by_id(params[:user_id])
+    if (user = User.find_by_id(params[:user_id]))
       articles = user.articles
-    elsif category = Category.find_by_id(params[:category_id])
+    elsif (category = Category.find_by_id(params[:category_id]))
       articles = category.articles
+    elsif (tag=Tag.find_by_id(params[:tag_id]))
+      articles = tag.articles
     elsif params[:search]
       articles = Article.search(params[:search])
     else
@@ -40,6 +42,11 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.save
+
+        params[:article][:tags].split(',').each do |tag|
+          @article.tags<<Tag.where(name: tag.strip).first_or_create!
+        end
+
         if params[:images]
           params[:images].each { |image|
             @article.pictures.create(image: image)
@@ -60,6 +67,13 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+
+        if params[:article][:tags]
+          @article.tags.clear
+          params[:article][:tags].split(',').each do |tag|
+            @article.tags<<Tag.where(name: tag.strip).first_or_create!
+          end
+        end
 
         if params[:images]
           params[:images].each { |image|
