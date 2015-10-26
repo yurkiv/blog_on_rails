@@ -10,6 +10,7 @@ RSpec.describe ArticlesController, type: :controller do
 
   let(:valid_attributes) do
     @category=FactoryGirl.create(:category)
+    # @tag=FactoryGirl.create(:tag)
     FactoryGirl.attributes_for(:article, user_id: user.id, category_id: @category.id)
   end
 
@@ -35,6 +36,15 @@ RSpec.describe ArticlesController, type: :controller do
       article2 = Article.create! FactoryGirl.attributes_for(:article, user_id: 1, category_id:666)
       article3 = Article.create! valid_attributes
       get :index, {category_id: 1}, valid_session
+      expect(assigns(:articles)).to match_array([article1, article3])
+    end
+
+    it "all articles by tag" do
+      tag666=FactoryGirl.create(:tag, name: 'tag666')
+      article1 = Article.create! valid_attributes
+      article2 = Article.create! FactoryGirl.attributes_for(:article, user_id: 1, tags: [tag666.id])
+      article3 = Article.create! valid_attributes
+      get :index, {tag_id: 1}, valid_session
       expect(assigns(:articles)).to match_array([article1, article3])
     end
   end
