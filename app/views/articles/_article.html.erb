@@ -11,6 +11,14 @@
     <p><%= image_tag article.pictures.first.image.url(:medium) %></p>
   <% end %>
 
+  <% unless article.tags.empty? %>
+    <p>
+      <% article.tags.each do |tag| %>
+        <span class="highlight_text"><%= link_to tag.name, tag_articles_path(tag_id: tag.id)  %></span>
+      <% end %>
+    </p>
+  <% end %>
+
   <!-- <% if can? :update, article %>
     <%= link_to 'Edit', edit_article_path(article), class: "button" %>
   <% end %>

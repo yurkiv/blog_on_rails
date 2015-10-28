@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
 </head>
 <body>
 
@@ -78,6 +79,16 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="tags">
+        <% unless Tag.all.empty? %>
+          <p>
+            <% Tag.all.each do |tag| %>
+              <span class="highlight_text"><%= link_to tag.name, tag_articles_path(tag_id: tag.id)  %></span>
+            <% end %>
+          </p>
+        <% end %>
       </div>
 
 

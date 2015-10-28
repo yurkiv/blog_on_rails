@@ -12,6 +12,14 @@
 
 <p><%= @article.content %></p>
 
+<% unless @article.tags.empty? %>
+  <p>
+    <% @article.tags.each do |tag| %>
+      <span class="highlight_text"><%= tag.name %></span>
+    <% end %>
+  </p>
+<% end %>
+<br>
 <% if can? :update, @article %>
 <%= link_to   "Edit", edit_article_path(@article),class: "button" %>
 <% end %>

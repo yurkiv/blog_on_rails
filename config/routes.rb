@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     resources :articles
   end
 
+  resources :tags do
+    resources :articles
+  end
+
   namespace :admin do
     resources :users
     resources :categories

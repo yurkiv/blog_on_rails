@@ -3,6 +3,7 @@ class Article < ActiveRecord::Base
   belongs_to :category
 
   has_many :pictures, :dependent => :destroy
+  has_and_belongs_to_many :tags
 
   validates :user_id, presence: true
   validates :category_id, presence: true
