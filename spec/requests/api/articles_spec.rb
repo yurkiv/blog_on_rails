@@ -5,7 +5,8 @@ RSpec.describe Api::V1::ArticlesController, type: :request do
   let!(:token) { FactoryGirl.create(:access_token, :resource_owner_id => user.id) }
 
   describe "GET /articles" do
-    let!(:article) { FactoryGirl.create(:article, title: "Test Article", user_id: user.id, category_id: 1) }
+    let!(:category) { FactoryGirl.create(:category) }
+    let!(:article) { FactoryGirl.create(:article, title: "Test Article", user_id: user.id, category_id: category.id) }
     it 'returns the articles as json' do
       get api_v1_articles_path, :format => :json, :access_token => token.token
       article_titles = json.map { |a| a["title"] }

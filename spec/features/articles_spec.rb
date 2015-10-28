@@ -32,8 +32,6 @@ RSpec.feature 'Articles', type: :feature do
 
     click_button 'Create Article'
 
-    puts page.body
-
     expect(page).to have_content('My Article')
     expect(page).to have_content('My Content')
     expect(page).to have_content('Category 1')
