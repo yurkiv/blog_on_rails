@@ -79,19 +79,56 @@ class Api::V1::ArticlesController < Api::V1::BaseController
       Content-Type: application/json
       body: {
               "article": {
-                "title": "Article from API",
-                "content": "texttext",
-                "category_id": "1"
-              }
+                    "title": "Article from API",
+                    "content": "texttext",
+                    "category_id": "1",
+                    "tags": [
+                          {
+                              "name": "tag1"
+                          },
+                          {
+                              "name": "tag2"
+                          }
+                        ],
+                    "images": [
+                          {
+                            "filename": "images.jpg",
+                            "content": "iVBORw0KGgoAAAANSUhEUgAAAc8AAAAqCAIAAABa5Ef5AAAa70lEQVR4Ae19CXQUVbp/RhFM",
+                            "content_type": "image/jpg"
+                          },
+                          {
+                            "filename": "oM9cMWd.png",
+                            "content": "iVBORw0KGgoAAAANSUhEUgAAAc8AAAAqCAIAAABa5Ef5AAAa70lEQVR4Ae",
+                            "content_type": "image/png"
+                          }
+                        ]
+                  }
             }
     === Example Result
       {
-        "id": 18,
         "title": "Article from API",
         "content": "texttext",
-        "user_id": "3",
-        "created_at": "2015-10-15T10:19:39.390Z",
-        "updated_at": "2015-10-15T10:19:39.390Z"
+        "author": "user2@email.com",
+        "category": "History",
+        "tags": [
+          {
+            "name": "tag1"
+          },
+          {
+            "name": "tag2"
+          }
+        ],
+        "images": [
+          {
+            "filename": "/system/pictures/images/000/000/021/original/images.jpg?1446117749",
+            "url": "http://localhost:3000/system/pictures/images/000/000/021/original/images.jpg?1446117749"
+          },
+          {
+            "filename": "/system/pictures/images/000/000/022/original/oM9cMWd.png?1446117750",
+            "url": "http://localhost:3000/system/pictures/images/000/000/022/original/oM9cMWd.png?1446117750"
+          }
+        ],
+        "url": "http://localhost:3000/articles/34.json"
       }
     EOS
   param :article, Hash, :desc => "Article info", :required => true do
@@ -99,13 +136,37 @@ class Api::V1::ArticlesController < Api::V1::BaseController
     param :content, String, "Content of the article", :required => true
     param :user_id, String, "user_id of the article"
     param :category_id, String, "category_id of the article", :required => true
+    param :tags, Array, :desc => "Article tags" do
+      param :name, String, :desc => "Name of the tag", :required => true
+    end
+    param :images, Array, :desc => "Article images" do
+      param :filename, String, :desc => "image filename", :required => true
+      param :content, String, :desc => "image file on Base64Encoded data", :required => true
+      param :content_type, String, :desc => "image content type, e.g. image/jpeg", :required => true
+    end
   end
   param_group :token
+
   def create
     @article = current_user.articles.build(article_params)
     @article.category params[:article][:category]
 
     if @article.save
+      if params[:article][:tags]
+        params[:article][:tags].each do |tag|
+          @article.tags<<Tag.where(name: tag[:name].strip).first_or_create!
+        end
+      end
+
+      begin
+        if params[:article][:images]
+          params[:article][:images].each { |img|
+            @article.pictures.create(image: parse_image_data(img))
+          }
+        end
+      rescue Exception => e
+        Rails.logger.error "#{e.message}"
+      end
       render :show, status: :created, location: @article
     else
       render json: @article.errors, status: :unprocessable_entity
@@ -120,35 +181,85 @@ class Api::V1::ArticlesController < Api::V1::BaseController
       Content-Type: application/json
       body: {
                 "article": {
-                      "title": "Article Title",
-                      "content": "content",
-                      "category_id": "1"
+                      "title": "Article from API v2",
+                      "content": "texttext",
+                      "category_id": "2",
+                      "tags": [
+                            {
+                                "name": "tag1"
+                            }
+                          ],
+                      "images": [
+                            {
+                              "filename": "images.jpg",
+                              "content": "iVBORw0KGgoAAAANSUhEUgAAAc8AAAAqCAIAAABa5Ef5AAAa70lEQVR4Ae19CXQUVbp/RhFM",
+                              "content_type": "image/jpg"
+                            }
+                          ]
                     }
             }
     === Example Result
       {
-        "id": 4,
-        "title": "Article Title",
-        "content": "content",
-        "user_id": "4",
-        "created_at": "2015-10-08T12:54:33.809Z",
-        "updated_at": "2015-10-15T10:26:30.087Z"
+        "title": "Article from API v2",
+        "content": "texttext",
+        "author": "user2@email.com",
+        "category": "Economics",
+        "tags": [
+          {
+            "name": "tag1"
+          }
+        ],
+        "images": [
+          {
+            "filename": "/system/pictures/images/000/000/025/original/images.jpg?1446119434",
+            "url": "http://localhost:3000/system/pictures/images/000/000/025/original/images.jpg?1446119434"
+          }
+        ],
+        "url": "http://localhost:3000/articles/36.json"
       }
     EOS
   param :article, Hash, :desc => "Article info", :required => true do
     param :title, String, "Title of the article"
     param :content, String, "Content of the article"
     param :category_id, String, "category_id of the article"
+    param :tags, Array, :desc => "Article tags" do
+      param :name, String, :desc => "Name of the tag", :required => true
+    end
+    param :images, Array, :desc => "Article images" do
+      param :filename, String, :desc => "image filename", :required => true
+      param :content, String, :desc => "image file on Base64Encoded data", :required => true
+      param :content_type, String, :desc => "image content type, e.g. image/jpeg", :required => true
+    end
   end
   param_group :token
   def update
-    respond_to do |format|
-      if @article.update(article_params)
-        format.json { render :show, status: :ok, location: @article }
-      else
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+    if @article.update(article_params)
+      @article.category params[:article][:category]
+
+      if params[:article][:tags]
+        @article.tags.clear
+        params[:article][:tags].each do |tag|
+          @article.tags<<Tag.where(name: tag[:name].strip).first_or_create!
+        end
       end
+
+      begin
+        if params[:article][:images]
+          params[:article][:images].each { |img|
+            @article.pictures.create(image: parse_image_data(img))
+          }
+        end
+      rescue Exception => e
+        Rails.logger.error "#{e.message}"
+      end
+
+      render :show, status: :ok, location: @article
+    else
+      render json: @article.errors, status: :unprocessable_entity
     end
+
+  ensure
+    clean_tempfile
   end
 
   api :DELETE, "/articles/:id", "Destroy an Article"
@@ -176,6 +287,30 @@ class Api::V1::ArticlesController < Api::V1::BaseController
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
       params.require(:article).permit(:title, :content, :user_id, :category_id)
+    end
+
+    # This part is actually taken from http://blag.7tonlnu.pl/blog/2014/01/22/uploading-images-to-a-rails-app-via-json-api.
+    # I tweaked it a bit by manually setting the tempfile's content type because somehow putting it in a hash during initialization didn't work for me.
+    def parse_image_data(image_data)
+      @tempfile = Tempfile.new('item_image')
+      @tempfile.binmode
+      @tempfile.write Base64.decode64(image_data[:content])
+      @tempfile.rewind
+
+      uploaded_file = ActionDispatch::Http::UploadedFile.new(
+          tempfile: @tempfile,
+          filename: image_data[:filename]
+      )
+
+      uploaded_file.content_type = image_data[:content_type]
+      uploaded_file
+    end
+
+    def clean_tempfile
+      if @tempfile
+        @tempfile.close
+        @tempfile.unlink
+      end
     end
 
 end
