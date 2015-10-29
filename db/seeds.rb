@@ -12,6 +12,13 @@
 #   Role.find_or_create_by_name({ name: role }, without_protection: true)
 # end
 
+Role.delete_all
+User.delete_all
+Category.delete_all
+Tag.delete_all
+Article.delete_all
+Picture.delete_all
+
 Role.create([{ name: 'admin' }, { name: 'user' }])
 
 a1 = User.create({email: "admin@email.com", password: "11111111", password_confirmation: "11111111"})
