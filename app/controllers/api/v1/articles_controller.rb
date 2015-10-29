@@ -158,15 +158,12 @@ class Api::V1::ArticlesController < Api::V1::BaseController
         end
       end
 
-      begin
-        if params[:article][:images]
-          params[:article][:images].each { |img|
-            @article.pictures.create(image: parse_image_data(img))
-          }
-        end
-      rescue Exception => e
-        Rails.logger.error "#{e.message}"
+      if params[:article][:images]
+        params[:article][:images].each { |image|
+          @article.pictures.create(image: parse_image_data(image))
+        }
       end
+
       render :show, status: :created, location: @article
     else
       render json: @article.errors, status: :unprocessable_entity
@@ -243,14 +240,10 @@ class Api::V1::ArticlesController < Api::V1::BaseController
         end
       end
 
-      begin
-        if params[:article][:images]
-          params[:article][:images].each { |img|
-            @article.pictures.create(image: parse_image_data(img))
-          }
-        end
-      rescue Exception => e
-        Rails.logger.error "#{e.message}"
+      if params[:article][:images]
+        params[:article][:images].each { |image|
+          @article.pictures.create(image: parse_image_data(image))
+        }
       end
 
       render :show, status: :ok, location: @article
@@ -258,8 +251,6 @@ class Api::V1::ArticlesController < Api::V1::BaseController
       render json: @article.errors, status: :unprocessable_entity
     end
 
-  ensure
-    clean_tempfile
   end
 
   api :DELETE, "/articles/:id", "Destroy an Article"
@@ -289,28 +280,12 @@ class Api::V1::ArticlesController < Api::V1::BaseController
       params.require(:article).permit(:title, :content, :user_id, :category_id)
     end
 
-    # This part is actually taken from http://blag.7tonlnu.pl/blog/2014/01/22/uploading-images-to-a-rails-app-via-json-api.
-    # I tweaked it a bit by manually setting the tempfile's content type because somehow putting it in a hash during initialization didn't work for me.
-    def parse_image_data(image_data)
-      @tempfile = Tempfile.new('item_image')
-      @tempfile.binmode
-      @tempfile.write Base64.decode64(image_data[:content])
-      @tempfile.rewind
-
-      uploaded_file = ActionDispatch::Http::UploadedFile.new(
-          tempfile: @tempfile,
-          filename: image_data[:filename]
-      )
-
-      uploaded_file.content_type = image_data[:content_type]
-      uploaded_file
-    end
-
-    def clean_tempfile
-      if @tempfile
-        @tempfile.close
-        @tempfile.unlink
-      end
-    end
+  def parse_image_data(img)
+    data = StringIO.new(Base64.decode64(img[:content]))
+    data.class.class_eval { attr_accessor :original_filename, :content_type }
+    data.original_filename = img[:filename]
+    data.content_type = img[:content_type]
+    data
+  end
 
 end
